@@ -1,0 +1,47 @@
+输入两个字符串，从第一字符串中删除第二个字符串中所有的字符。例如，输入”They are students.”和”aeiou”，则删除之后的第一个字符串变成”Thy r stdnts.”
+输入描述:
+每个测试输入包含2个字符串
+输出描述:
+输出删除后的字符串
+示例1
+输入
+复制
+They are students. 
+aeiou
+输出
+复制
+Thy r stdnts.
+
+代码如下：
+#include<iostream>
+#include<string>
+using namespace std;
+int main()
+{
+    string str1;
+    string str2;
+    
+    //因为输入的字符串中含有空格，因此不能使用cin进行输入
+    //这里使用getline
+    getline(cin,str1);
+    getline(cin,str2);
+    
+    //使用哈希的思想先统计str2字符出现的次数
+    char hashTable[256]={0};
+    for(int i=0; i<str2.size();i++)
+    {
+        hashTable[str2[i]]++;
+    }
+    
+    //遍历str1，str1[i]映射hashTable对应的位置为0，表示这个字符在str2中没有出现过。
+    //将它插入到ret中
+    //注意这里最好不要使用str.erase(i)
+    //因为边遍历，边erase，容易出错。
+    string ret;
+    for(int j =0 ;j<str1.size();j++)
+    {
+        if(hashTable[str1[j]] == 0)
+            ret += str1[j];
+    }
+    cout<<ret<<endl;
+}
