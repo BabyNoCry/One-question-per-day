@@ -1,0 +1,40 @@
+题目描述
+读入一个字符串str，输出字符串str中的连续最长的数字串
+输入描述:
+个测试输入包含1个测试用例，一个字符串str，长度不超过255。
+输出描述:
+在一行内输出str中里连续最长的数字串。
+示例1
+输入
+复制
+abcd12345ed125ss123456789
+输出
+复制
+123456789
+
+
+这个题目做的时候容易进坑地方就是：
+遍历，这个字符串的时候需要将最后一个'\0'也进行遍历，负责当最长的数字串为字符串结尾时结果会出错
+，少了一次比较。
+
+#include<iostream>
+#include<string>
+using namespace std;
+int main()
+{
+    string s,cur,ret;
+    cin>>s;
+    for(size_t i = 0;i<=s.size();i++)	//这里的<=号很重要 坑在这里！！
+    {
+        if(s[i]<='9'&&s[i]>='0')
+            cur += s[i];
+        else
+        {
+            if(cur.size()>ret.size())
+                ret = cur;
+            cur.clear();
+        }
+    }
+    cout<<ret<<endl;
+    return 0;
+}
