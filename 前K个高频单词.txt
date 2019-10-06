@@ -1,0 +1,114 @@
+给一非空的单词列表，返回前?k?个出现次数最多的单词。
+
+返回的答案应该按单词出现频率由高到低排序。如果不同的单词有相同出现频率，按字母顺序排序。
+
+示例 1：
+
+输入: ["i", "love", "leetcode", "i", "love", "coding"], k = 2
+输出: ["i", "love"]
+解析: "i" 和 "love" 为出现次数最多的两个单词，均为2次。
+    注意，按字母顺序 "i" 在 "love" 之前。
+?
+
+示例 2：
+
+输入: ["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"], k = 4
+输出: ["the", "is", "sunny", "day"]
+解析: "the", "is", "sunny" 和 "day" 是出现次数最多的四个单词，
+    出现次数依次为 4, 3, 2 和 1 次。
+?
+
+注意：
+
+假定 k 总为有效值， 1 ≤ k ≤ 集合元素数。
+输入的单词均由小写字母组成。
+
+
+通过代码1：
+//没有考虑出现次数相同的不同单词的情况，但是依旧通过
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        //1.
+        map<string ,int >countmap;
+        for(const string& s:words)
+            countmap[s]++;
+        
+        multimap<int,string,greater<int>>sortmap;
+        for(const auto& kv:countmap)
+        {
+                sortmap.insert(make_pair(kv.second,kv.first));
+        }
+        vector<string>v;
+        multimap<int,string>::iterator it=sortmap.begin();
+        while(it != sortmap.end()&&k--)
+        {
+            v.push_back(it->second);
+            ++it;
+        }
+        return v;
+        
+    }
+};
+
+代码二：考虑到上述情况
+class Solution {
+    
+public:
+    class Compare
+    {
+        public:
+      //在set中进行排序时比较规则
+        bool operator()(const pair<string,int>& left,const pair<string,int>& right)
+        {
+            return left.second>right.second;
+        }
+    };
+    
+    
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        //用map统计每个单词的次数
+        map<string,int> m;
+        for(auto e: words)
+            m[e]++;
+        
+        //将单词按照其出现的次数进行排序，出现次数相同的次数的单词集中在一块儿
+        multiset<pair<string, int>, Compare> ms(m.begin(), m.end())	//(Compare在这里有问题，找不到原因）
+        
+        set<string> s;
+        size_t count = 0;   //统计形同次数的单词数
+        size_t leftcount = k;
+        
+        vector<string> ret;
+        for(auto e: ms)
+        {
+            if(!s.empty())
+            {
+                //相同次数的单词已经全部放到set中
+                if(count != e.second)
+                {
+                    if(s.size()<leftcount)
+                    {
+                        ret.insert(ret.end(),s.begin(),s.end());
+                        leftcount-=s.size();
+                        s.Clear();
+                    }
+                    else
+                        break;
+                }
+            }
+            
+            count = e.second;
+            s.insert(e.first);
+                     
+        }
+        for(auto& e: s)
+        {
+            if(0==leftcount)
+                break;
+            ret.push_back(e);
+            leftcount--;
+        }
+        return ret;
+    }
+};
