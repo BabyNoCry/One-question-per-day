@@ -1,0 +1,55 @@
+
+输入描述:
+输入三行，分别是年，月，日
+
+输出描述:
+成功:返回outDay输出计算后的第几天;
+                                           失败:返回-1
+
+示例1
+输入
+复制
+2012
+
+12
+
+31
+输出
+复制
+366
+#include<iostream>
+#include<vector>
+using namespace std;
+bool Is_run(int year)
+{
+    if((year%4==0&&year%100!=0)||year%400==0)
+        return true;
+    else
+        return false;
+}
+int main()
+{
+    int year,month,day;
+    while(cin>>year>>month>>day)
+    {
+    
+    
+    vector<int> days{0,31,29,31,30,31,30,31,31,30,31,30,31};
+    int count = 0;
+    if(Is_run(year))
+    {
+        for(int i = 1;i<month;i++)
+            count += days[i];
+    }
+     else
+     {
+          for(int i = 1;i<month;i++)
+            count += days[i];
+         if(month>2)
+             count--;
+        }
+    count+= day;
+    cout<<count<<endl;
+    }
+    return 0;
+}
