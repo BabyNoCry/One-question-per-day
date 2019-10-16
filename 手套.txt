@@ -15,6 +15,7 @@ AÏÈÉúÏÖÔÚÒª³öÃÅ£¬ËùÒÔËûÒªÈ¥µØÏÂÊÒÑ¡ÊÖÌ×¡£µ«ÊÇ»è°µµÄµÆ¹âÈÃËûÎÞ·¨·Ö±æÊÖÌ×µÄÑÕÉ«£¬Ö
 ¡¾½âÌâË¼Â·¡¿£º
 ¶ÔÓÚ·Ç0µÝÔöÐòÁÐa1,a2...an£¬ÒªÏë×îÖÕÈ¡Öµ¸²¸ÇÃ¿Ò»¸öÖÖÀà n=sum(a1...an)-a1+1£¨Ò²¾ÍÊÇ×ÜÊý¼õÈ¥×îÐ¡ÖµÖ®ºó ¼ÓÒ»£© ËùÒÔ¶ÔÓÚ×óÓÒÊÖÊÖÌ×ÑÕÉ«¶¼ÓÐÊýÁ¿µÄÐòÁÐ£¬
 ÏëÒª¸²¸ÇÃ¿Ò»ÖÖÑÕÉ«£¬Ôò×îÐ¡ÊýÁ¿leftsum = ×ó±ßÊýÁ¿ºÍ - ×ó±ß×î Ð¡Öµ+1£¬rightsum=ÓÒ±ßÊýÁ¿ºÍ -ÓÒ±ßµÄ×îÐ¡Öµ +1¡£¶ø¶ÔÓÚÓÐ0´æÔÚµÄ£¬ÔòÐèÒª×öÀÛ¼Ó£¬±£Ö¤¸²¸ÇÃ¿Ò»ÖÖÑÕÉ«¡£
+µ±Ê±ÔÚ½âÌâµÄÊ±ºòÒÅÂ©µÄÒ»µãÊÇ£ºÄÃµÄÊ±ºò¿ÉÒÔÇø·Ö×óÓÒÊÖ
 class Gloves {
 public:
     int findMinimum(int n, vector<int> left, vector<int> right) {
