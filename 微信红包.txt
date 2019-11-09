@@ -1,0 +1,48 @@
+春节期间小明使用微信收到很多个红包，非常开心。在查看领取红包记录时发现，某个红包金额出现的次数超过了红包总数的一半。请帮小明找到该红包金额。写出具体算法思路和代码实现，要求算法尽可能高效。
+
+给定一个红包的金额数组gifts及它的大小n，请返回所求红包的金额。
+
+若没有金额超过总数的一半，返回0。
+测试样例：
+[1,2,3,2,2],5
+返回：2
+
+方法一：
+使用map统计次数，最后数量是否大于n/2;
+class Gift {
+public:
+    int getValue(vector<int> gifts, int n) {
+        // write code here
+        map<int,int> m;
+        for(auto e: gifts)
+        {
+            m[e]++;
+        }
+        for(auto e:m)
+        {
+            if(e.second>n/2)
+                return e.first;
+        }
+        return 0;
+    }
+};
+
+方法二：
+先给该序列排序，排序过后，必然排在中间，则最后遍历整个数组查看是否符合即可。
+class Gift {
+public:
+    int getValue(vector<int> gifts, int n) {
+        // write code here
+        sort(gifts.begin(),gifts.end());
+        int middle = gifts[n/2];
+        int count = 0;
+        for(int i = 0 ;i<gifts.size();i++)
+        {
+            if(gifts[i] == middle)
+                count++;
+        }
+        if(count > n/2)
+            return middle;
+        return 0;
+    }
+};
