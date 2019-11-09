@@ -1,0 +1,55 @@
+本题需要用动态规划解题 状态： 子状态：word1的前1，2，3，...m个字符转换成word2的前1，2，3，...n 个字符需要的编辑距离
+F(i,j):word1的前i个字符于word2的前j个字符的编辑距离 状态递推： F(i,j) = min { F(i-1,j）+1, F(i,j-1) +1, F(i1,j-1) +(w1[i]==w2[j]?0:1) } 上式表示从删除，增加和替换操作中选择一个小操作数 F(i-1,j): w1[1,...,i-1]于 w2[1,...,j]的编辑距离，删除w1[i]的字符--->F(i,j) F(i,j-1): w1[1,...,i]于w2[1,...,j-1]的编辑距离，增加一个字符-->F(i,j) F(i-1,j-1): w1[1,...,i-1]于w2[1,...,j-1]的编辑距离，如果w1[i]与w2[j]相同， 不做任何操作，编辑距离不 变，如果w1[i]与w2[j]不同，替换w1[i]的字符为w2[j]--->F(i,j) 初始化： 初始化一定要是确定的值，如果这里 不加入空串，初始值无法确定 F(i,0) = i :word与空串的编辑距离，删除操作 F(0,i) = i :空串与word的编辑距 离，增加操作 返回结果：F(m,n)
+
+
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+using namespace std;
+int MinDistance(string& s1,string s2)
+{
+        if(s1.empty()||s2.empty())
+            return max(s1.size(),s2.size());
+        int len1 = s1.size();
+        int len2 = s2.size();
+        vector<vector<int> > f(len1+1,vector<int>(len2 +1,0));
+        for(int i =  0;i<=len1;i++)
+        {
+            f[i][0] = i;
+        }
+        for(int i = 0;i<=len2;i++)
+        {
+            f[0][i] = i;
+        }
+        
+        for(int i = 1;i<=len1;i++)
+        {
+            for(int j = 1;j<=len2;j++)
+            {
+                if(s1[i-1] == s2[j-1])
+                {
+                     f[i][j] =1 + min(f[i][j-1],f[i-1][j]);
+                  //字符相等，f[i-1][j-1]编辑距离不变
+                    f[i][j] = min(f[i][j],f[i-1][j-1]);
+                }
+                else
+                {
+                    f[i][j] = min(f[i][j-1],f[i-1][j])+1;
+                    //字符不相等，f[i-1][j-1]编辑距离+1
+                    f[i][j] = min(f[i][j],f[i-1][j-1]+1);
+                }
+                       
+            }
+        }
+    return f[len1][len2];
+}
+int main()
+{
+    string s1,s2;
+    while(cin>>s1>>s2)
+    {
+        cout<<MinDistance(s1,s2)<<endl;
+    }
+    return 0;
+}
