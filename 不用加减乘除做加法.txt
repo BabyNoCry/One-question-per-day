@@ -1,0 +1,16 @@
+不使用加减乘除做加法  
+class Solution {
+public:
+    int Add(int num1, int num2)
+    {
+        int tmp = num1&num2;
+        while(tmp != 0)
+        {
+            num2 = num1^num2;
+            num1 = tmp<<1;
+            tmp = num1&num2;
+            
+        }
+        return num1|num2;
+    }
+};
