@@ -1,0 +1,74 @@
+题目描述
+请实现一个函数，将一个字符串中的每个空格替换成“%20”。
+例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。
+解题思路：
+首先计算str现有长度和修改后的长度，然后利用两个指针，从后往前赋值
+class Solution {
+public:
+    void replaceSpace(char *str,int length) {
+        if( str == NULL )
+            return;
+        int originalLen = 0; //原有长度
+        int blankNum = 0; //空格个数
+        
+        for( int i=0;str[i]!='\0';i++ )
+        {
+            originalLen++;
+            if( str[i] == ' ' )
+                blankNum++;
+        }
+        int len = originalLen + blankNum * 2; //修改后长度
+        if( len+1 > length ) //判断不能超过最大长度
+            return;
+        
+        char *p1 = str + originalLen; //修改前str的末尾，指向'\0'
+        char *p2 = str + len; //修改后str的末尾，指向'\0'
+        while( p2 > p1 ) //从后往前赋值
+        {
+            if( *p1 == ' ' )
+            {
+                *p2 = '0';
+                p2--;
+                *p2 = '2';
+                p2--;
+                *p2 = '%';
+                p2--;
+            }
+            else
+            {
+                *p2 = *p1;
+                p2--;
+            }
+            p1--;
+        }
+        
+        return;
+    }
+};
+
+class Solution {
+public:
+	void replaceSpace(char *str,int length) {
+        string tmp = "%20";
+        string ret ;
+        for(int i = 0;i<length;i++)
+        {
+            if(str[i]!= ' ')
+            {
+                ret+= str[i];
+            }
+            else
+            {
+                ret += tmp;
+            }
+        }
+        
+        int i = 0;
+        while(ret[i])
+        {
+            str[i] = ret[i];
+            i++;
+        }
+        str[i] = 0;
+	}
+};
