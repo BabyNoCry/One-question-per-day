@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int rectCover(int number) {
+        //当大矩形为 2*1 时，只有一种发放法，当为2*2*1 时有两种方法。
+        //f(1) = 1; f(2) = 2；
+        //当为 n*2*1 时，第一种横着放2*1的，则剩下的放法为 f（n-2），若竖着放一个时，剩下的放法为f(n-1)
+        //则就有 f(n) = f(n-2) + f(n-1) ;  又是斐波那契数
+        if(number <=2)
+            return number;
+        return rectCover(number-2) + rectCover(number-1);
+        
+    }
+};
