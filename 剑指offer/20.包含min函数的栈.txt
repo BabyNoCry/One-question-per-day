@@ -1,0 +1,50 @@
+题目描述
+定义栈的数据结构，
+请在该类型中实现一个能够得到栈中所含最小元素的min函数
+（时间复杂度应为O（1））。
+class Solution {
+ private:
+    stack<int> st;
+    stack<int> mt;
+public:
+    void push(int value) {
+        if(st.empty())    
+        {
+            st.push(value);
+            mt.push(value);
+        }
+        else
+        {
+            if(value < mt.top())
+            {
+                st.push(value);
+                mt.push(value);
+            }
+            else
+            {
+                st.push(value);
+                mt.push(mt.top());
+            }
+        }
+    }
+    void pop() {
+        if(!st.empty())
+        {
+            st.pop();
+            mt.pop();
+        }
+    }
+    int top() {
+        if(!st.empty())
+        {
+            return st.top();
+        }
+        return -1;
+    }
+    int min() {
+        if(!mt.empty())
+            return mt.top();
+        return -1;
+    }
+   
+};

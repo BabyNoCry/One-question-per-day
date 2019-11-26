@@ -1,0 +1,58 @@
+题目描述
+输入一颗二叉树的跟节点和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+(注意: 在返回值的list中，数组长度大的数组靠前)
+     本题使用前序遍历的方式访问节点，使用二维向量result存储全部路径，
+使用一维向量tmp存储当前路径。
+遍历二叉树的过程：按前序遍历顺序访问每一个节点。
+访问每个结点时，将结点添加到路径向量tmp中。
+如果当前结点是叶子结点，则判断当前路径是否是符合条件的路径，符合条件的路径存入到二维向量result；
+如果当前结点不是叶子结点，则递归当前节点的左右子节点。
+
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    vector<vector<int> > FindPath(TreeNode* root,int expectNumber) {
+        if(root == NULL)
+            return ret;
+       dfsFind(root,expectNumber);
+         return  ret;
+    }
+    void dfsFind(TreeNode* root,int expectNumber)
+    {
+        tmp.push_back(root->val);
+        if(!root->left&&!root->right)
+        {
+            if(expectNumber - root->val == 0)
+                ret.push_back(tmp);
+        }
+        else
+        {
+            if(root->left)
+            {
+                dfsFind(root->left,expectNumber - root->val);
+            }
+            
+            if(root->right)
+            {
+                dfsFind(root->right,expectNumber - root->val);
+            }
+        }
+        
+        if(!tmp.empty())
+        {
+            tmp.pop_back();
+        }       
+    }
+  private:
+    vector<vector<int>> ret;
+    vector<int> tmp;
+    
+};
