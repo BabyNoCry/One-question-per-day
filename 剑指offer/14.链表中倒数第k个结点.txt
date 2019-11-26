@@ -1,0 +1,22 @@
+题目描述
+输入一个链表，输出该链表中倒数第k个结点。
+快慢指针法：
+class Solution {
+public:
+    ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+        if(pListHead == NULL)
+            return NULL;
+        int i = 0;
+        ListNode* fast = pListHead;
+        ListNode* slow = pListHead;
+        for( i = 0;fast!= NULL;i++)
+        {
+            if(i>=k)
+            {
+                slow = slow->next;
+            }
+            fast = fast->next;
+        }
+         return i>=k?slow:NULL;
+    }
+};

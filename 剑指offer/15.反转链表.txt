@@ -1,0 +1,23 @@
+题目描述
+输入一个链表，反转链表后，输出新链表的表头。
+三个指针：
+class Solution {
+public:
+    ListNode* ReverseList(ListNode* pHead) {
+        if(pHead ==NULL || pHead->next == NULL)
+            return pHead;
+        ListNode* cur = pHead;
+        ListNode* next = pHead->next;
+        ListNode* prev = NULL;
+        while(next != NULL)
+        {
+            cur ->next = prev;
+            prev = cur;
+            cur = next;
+            next = next->next;
+        }
+        cur->next =  prev;
+        return cur;
+        
+    }
+};

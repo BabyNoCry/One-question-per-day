@@ -1,0 +1,58 @@
+题目描述
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于数组的后半部分，
+并保证奇数和奇数，偶数和偶数之间的相对位置不变。
+1.用一个数组解决
+class Solution {
+public:
+    void reOrderArray(vector<int> &array) {
+        vector<int> ret;
+        for(int i = 0;i<array.size();i++)
+        {
+            if(array[i]%2 == 1)
+                ret.push_back(array[i]);
+            
+        }
+        for(int i = 0;i<array.size();i++)
+        {
+            if(array[i]%2 == 0)
+                ret.push_back(array[i]);
+            
+        }
+        array =ret;
+    }
+};
+
+2.原数组进行改变
+**首先，begin从左向右遍历，找到第一个偶数； 
+  然后，from从begin+1开始向后找，直到找到第一个奇数； 
+  接着，将[begin,…,from-1]的元素整体后移一位； 
+  最后将找到的奇数放入begin位置，然后begin++。**
+class Solution {
+public:
+    void reOrderArray(vector<int> &array) {
+        int begin = 0;
+        int j = 0;
+        while(begin<array.size())
+        {
+            while(array[begin]%2 == 1&&begin<array.size())
+            {
+                begin ++;
+            }
+            if(begin == array.size())
+             return ;
+            j = begin+1;
+            while(j<array.size()&&array[j]%2 == 0)
+            {
+                j++;
+            }
+            if(j == array.size())
+                return ;
+            int tmp = array[j];
+            for(int n = j;n>begin;n--)
+            {
+                array[n] = array[n-1];
+            }
+            array[begin] = tmp;
+        }
+    }
+};
