@@ -1,0 +1,69 @@
+给定一个三角矩阵，找出自顶向下的最短路径和，每次可以向下走，或者向下面的相邻结点即 （i,j） -> (i+1,j) (i+1 ,j+1)
+求从顶部到底部的最短路径和。
+
+第一种状态：
+状态 F(i,j) : 从（0,0） 到 （i，j） 的最短路径和
+F(i,j):min(F(i-1,j-1),F(i-1,j)) + a[i][j]
+
+F(i,0) : F(i-1,0) + a[i][0]
+F(i,i) :  F(i-1,i-1) + a[i][i];
+
+初始： F(0,0)  = a[0][0];
+返回： min(F(n-1,j));
+
+
+class Solution {
+public:
+    int minimumTotal(vector<vector<int> > &triangle) {
+        if(triangle.empty())
+            return 0;
+        //F(0,0) = a[0][0];
+        vector<vector<int>> minT(triangle);
+        //第一列，最后一列
+        for(int i = 1;i<minT.size();i++)
+        {
+            minT[i][0] = minT[i-1][0] + triangle[i][0];
+            minT[i][i] = minT[i-1][i-1] + triangle[i][i]; 
+        }
+        for(int i = 2; i<triangle.size();i++)
+        {
+            for(int j = 1;j<i;j++)
+            {
+                minT[i][j] = min(minT[i-1][j],minT[i-1][j-1]) + triangle[i][j];
+            }
+        }
+        int row = triangle.size();
+        int minRet = minT[row -1][0];
+        for(int i =1;i<row;i++)
+        {
+            minRet = min(minRet,minT[row-1][i]);
+        }
+        return minRet;
+    }
+};
+
+第二中状态：
+f(i,j): 从 (i,j) 到最后一行的最短路径和
+f( i ,j ) = min(f(i+1,j),f(i+1,j+1)) + a[i][j];
+返回值： f(0,0);
+初始状态：
+最后一行
+f(row-1 , j)  =  a[row-1][j]; 
+代码实现：
+class Solution {
+public:
+    int minimumTotal(vector<vector<int> > &triangle) {
+        if(triangle.empty())
+            return 0;
+        vector<vector<int>> minT(triangle);
+        int row = triangle.size();
+        for(int i = row - 2;i>=0;i--)
+        {
+            for(int j = 0;j<= i;j++)
+            {
+                minT[i][j] = min(minT[i+1][j],minT[i+1][j+1])+ triangle[i][j];
+            }
+        }
+        return minT[0][0];
+    }
+};

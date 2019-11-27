@@ -1,0 +1,33 @@
+n个商品，价值数组为 V，大小数组为A
+包的大小为m，求装的最大价值。
+状态f(i, j ):  从前i个商品中选取一部分，放入大小为j的包时的最大值
+     F(i,j):	不放入第i个商品：F(i-1,j)
+	放入第i个商品:      max (F(i-1,j-A[i]) + V[i] , F(i-1,j) )
+
+初始状态： F(0,j) = 0;
+	F(i,0) = 0;
+转移方程： i > j :  F(i,j)  = F(i-1,j)
+	i<=j:   F(i,j) = max(F(i-1,j), F(i-1,j-A[i]) + V[i] );
+返回： F(n,m);
+代码实现：
+int backPackII(int m ,vector<int>&A,vector<int>& V)
+{
+	int row = A.size(); 
+	vector<vector<int>> maxV(row+1,vector<int>(m+1,0));
+	for(int i = 1; i<= row ;i++)
+	{
+		for(int j = 1; j<= m;j++)
+		{
+			if(A[i-1] > j)
+			{
+				maxV[i][j] = maxV[i-1][j]	
+			}
+			else
+			{
+				maxV[i][j] = max(maxV[i-1][j],maxV[i-1][j-A[i]]+V[i-1]);
+			}
+		}
+	}
+	return maxV[row,m];
+}
+
