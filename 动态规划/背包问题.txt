@@ -31,3 +31,28 @@ int backPackII(int m ,vector<int>&A,vector<int>& V)
 	return maxV[row,m];
 }
 
+
+
+优化空间：
+一维数组解决：
+int backPackII(int m ,vector<int>&A,vector<int>& V)
+{
+	int row = A.size(); 
+	vector<int> maxV(m+1,0);
+	for(int i = 1; i<= row ;i++)
+	{
+		for(int j = m; j>0;j--)
+		{
+			if(A[i-1] > j)
+			{
+				maxV[i][j] = maxV[i-1][j]	
+			}
+			else
+			{
+				maxV[i][j] = max(maxV[i-1][j],maxV[i-1][j-A[i]]+V[i-1]);
+			}
+		}
+	}
+	return maxV[m];
+}
+
