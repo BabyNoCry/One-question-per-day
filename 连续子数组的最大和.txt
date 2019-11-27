@@ -1,0 +1,20 @@
+一个数组，要求求出该数组连续子序列的最大和
+
+动态规划：
+状态f(i)：以第i个元素结尾的最大连续子序列的和 
+     f(i)  =  max (a[i] , a[i] + f(i-1));
+     f(0)  = a[0];
+     f(1) = max(a[1],a[1] + f(0));
+代码如下：
+int max_num(vector<int > v)
+{
+	int f = v[0];
+	int MaxSum = v[0];
+	for(int i  = 1;i<v.size();i++)
+	{
+		f = max(v[i],v[i]+ f);
+		MaxSum = max(f,MaxSum);
+	}
+	return MaxSum;
+
+}
