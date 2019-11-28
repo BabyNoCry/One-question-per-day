@@ -1,0 +1,53 @@
+/*
+struct RandomListNode {
+    int label;
+    struct RandomListNode *next, *random;
+    RandomListNode(int x) :
+            label(x), next(NULL), random(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+   RandomListNode* Clone(RandomListNode* pHead)
+{
+     if(pHead==NULL)
+     return NULL;
+     //拷贝并且插入结点
+     RandomListNode* cur=pHead;
+     while(cur)
+     {
+    //新结点
+     RandomListNode* newnode=(RandomListNode*)malloc(sizeof(RandomListNode));
+     newnode->label=cur->label;
+     newnode->next=NULL;
+     newnode->random=NULL;
+     //插入
+     RandomListNode* next=cur->next;
+     cur->next=newnode;
+     newnode->next=next;
+     cur=next;
+     }
+    //置新链表的random域
+     cur=pHead;
+     while(cur)
+    {
+    RandomListNode* copy=cur->next;
+  
+   copy->random = (cur->random == NULL)?(NULL):(cur->random->next);
+   cur=cur->next->next;
+   }
+   //将拷贝的链拆解下来
+   cur=pHead;
+   //找新链表的头结点
+   RandomListNode* copylist=cur->next;
+   while(cur->next)
+   {
+       RandomListNode* pp=cur->next;
+       cur->next = pp->next;
+       cur=pp;
+   }
+   return copylist;
+}
+
+};
