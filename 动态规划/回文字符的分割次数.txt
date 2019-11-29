@@ -1,0 +1,88 @@
+题目描述
+给出一个字符串s，分割s使得分割出的每一个子串都是回文串
+计算将字符串s分割成回文分割结果的最小切割数
+例如:给定字符串s="aab",
+返回1，因为回文分割结果["aa","b"]是切割一次生成的。
+分析：
+状态 f(i) ： 前i个字符的最小分割数
+f( i )  ： if substr(j+1,i)是回文串：min(F(i),F(j)+1 )  (j<i)
+
+初始值： F(i )  =  i-1;     //只有一个字符的时候，不用切割。即切割0次。 
+			//F(0)  =  -1?  F(0) 的意义在于用来判断整体是否为回文串 
+//将整体是否为回文串，单独判断
+class Solution {
+public:
+    bool IS_pal(string s,int start,int end)
+    {
+            
+        while(start < end)
+        {
+            if(s[start] != s[end])
+                return false;
+            start++;
+            end--;
+        }
+        return true;
+    }
+    int minCut(string s) {
+        if(s.empty())
+            return 0;
+        vector<int> mcut(s.size(),0);
+        for(int i = 0;i<s.size();i++)
+        {
+            //i在这里表示索引，
+            mcut[i] = i;
+        }
+        for(int i = 0;i<s.size();i++)
+        {
+            if(IS_pal(s,0,i))
+            {
+                mcut[i] = 0;
+                continue;
+            }
+
+            for(int j = 0;j<i;j++)
+            {
+                if(IS_pal(s,j+1,i))
+                    mcut[i] = min(mcut[i],mcut[j]+1);
+            }
+        }
+        return mcut[s.size()-1];
+    }
+};
+
+//将整体是否为回文串不进行单独判断
+class Solution {
+public:
+    bool IS_pal(string s,int start,int end)
+    {
+            
+        while(start < end)
+        {
+            if(s[start] != s[end])
+                return false;
+            start++;
+            end--;
+        }
+        return true;
+    }
+    int minCut(string s) {
+        if(s.empty())
+            return 0;
+        vector<int> mcut(s.size()+1,0);
+        for(int i = 0;i<=s.size();i++)
+        {
+            //i在这里表示索引，
+            mcut[i] = i-1;
+        }
+        for(int i = 0;i<=s.size();i++)
+        {
+            for(int j = 0;j<i;j++)
+            {
+                if(IS_pal(s,j,i-1))
+                    mcut[i] = min(mcut[i],mcut[j]+1);
+            }
+        }
+        return mcut[s.size()];
+    }
+};
