@@ -1,0 +1,81 @@
+题目描述
+给定一个字符串S和一个字符串T，计算S中的T的不同子序列的个数。
+字符串的子序列是由原来的字符串删除一些字符（也可以不删除）在不改变相对位置的情况下的剩余字符（例如，"ACE"is a subsequence of"ABCDE"但是"AEC"不是）
+例如：
+S ="rabbbit", T ="rabbit"
+返回3
+
+F(i,j): S的前i个i字符构成的子串与T的前j个字符相同的个数
+F(i,j) :  S[i] == T[j] :
+	S[i]作为子串的最后一个字符：F(i-1,j-1)
+	不使用S[i]:F(i-1,j) 
+	F(i-1,j-1) + F(i-1,j) 
+      
+初始：F(i,0) = 1,F(0,j) = 0  (j! = 0)
+
+返回：F(S.size(),T.size());
+
+
+代码：
+class Solution {
+public:
+    int numDistinct(string S, string T) {
+        if(S.empty())
+        {
+            if(T.empty())
+            return 1;
+            return 0;
+        }
+        
+        int row = S.size();
+        int col = T.size();
+        
+        vector<vector<int>> num(row+1,vector<int>(col+1,0));
+       //F(i,0) = 1;
+        for(int i = 0;i<=row;i++)
+            num[i][0] = 1;
+        for(int i = 1;i<=row;i++)
+        {
+            for(int j = 1;j<= col;j++)
+            {
+                if(S[i-1] == T[j-1])
+                    num[i][j] = num[i-1][j-1] + num[i-1][j];
+                else
+                    num[i][j] = num[i-1][j];
+            }
+        }
+        return num[S.size()][T.size()];
+    }
+};
+
+
+
+优化为一维数组：
+class Solution {
+public:
+    int numDistinct(string S, string T) {
+        if(S.empty())
+        {
+            if(T.empty())
+            return 1;
+            return 0;
+        }
+        
+        int row = S.size();
+        int col = T.size();
+        
+        vector<int> num(col+1,0);
+        num[0] =1;
+        for(int i = 1;i<=row;i++)
+        {
+            for(int j = col;j>0;j--)
+            {
+                if(S[i-1] == T[j-1])
+                    num[j] = num[j-1] + num[j];
+                else
+                    num[j] = num[j];  //该部分可省略不写
+            }
+        }
+        return num[col];
+    }
+};
