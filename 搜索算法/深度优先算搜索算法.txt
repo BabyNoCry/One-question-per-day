@@ -1,0 +1,32 @@
+DFS（当前这一步）：
+	1. 这一步操作逻辑
+	2. 边界
+	3. DFS(下一步)
+
+假如有编号为1~3的3张扑克牌和编号为1~3的3个盒子，现在需要将3张牌分别放到3个盒子中去，
+且每个盒子只能放 一张牌，一共有多少种不同的放法？
+
+代码：
+void DFS(int curIdx,vector<int>& box,vector<int>& used,int n)
+{
+	//边界
+	if(curIdx == n)
+	{
+		for(auto& e: box)
+			cout<<e<<" ";
+		cout<<endl;
+		return;
+	}
+	//处理当下
+	//尝试每一张可用的牌
+	for(int i = 1;i<= n ; i++)
+	{
+		if(used[i ] == 0)
+		{
+			box[curIdx] = i;
+			used[i]  =  1;
+			DFS(curIdx+1,box,used,n);	//处理下一个孩子
+			used[i] = 0;	//回收当前盒子的牌
+		}
+	}
+}
