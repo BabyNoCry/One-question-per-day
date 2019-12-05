@@ -1,0 +1,45 @@
+给定一个仅包含数字?2-9?的字符串，返回所有它能表示的字母组合。
+
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+
+
+
+示例:
+
+输入："23"
+输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+说明:
+
+
+ static string  mapstring [] = {"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+class Solution {
+public:
+    
+    void backTrace(string& digits,vector<string>&ret,string curstr,int curdepth)
+    {
+        if(curdepth == digits.size() )
+        {
+            if(!curstr.empty())
+            {
+                ret.push_back(curstr);
+            }
+            return ;
+        }
+
+        int curMapIndex = digits[curdepth] - '0';
+        string curMap = mapstring[curMapIndex];
+        for(auto& ch:curMap)
+        {
+            backTrace(digits,ret,curstr + ch,curdepth + 1);
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        vector<string> ret;
+        if(digits.empty())
+        return ret;
+        string str;
+        backTrace(digits,ret,str,0);
+        return ret;
+    }
+
+};
