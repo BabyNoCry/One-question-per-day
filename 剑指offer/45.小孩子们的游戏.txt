@@ -1,0 +1,74 @@
+题目描述
+每年六一儿童节,牛客都会准备一些小礼物去看望孤儿院的小朋友,今年亦是如此。HF作为牛客的资深元老,自然也准备了一些小游戏。其中,有个游戏是这样的:首先,让小朋友们围成一个大圈。然后,他随机指定一个数m,让编号为0的小朋友开始报数。每次喊到m-1的那个小朋友要出列唱首歌,然后可以在礼品箱中任意的挑选礼物,并且不再回到圈中,从他的下一个小朋友开始,继续0...m-1报数....这样下去....直到剩下最后一个小朋友,可以不用表演,并且拿到牛客名贵的“名侦探柯南”典藏版(名额有限哦!!^_^)。请你试着想下,哪个小朋友会得到这份礼品呢？(注：小朋友的编号是从0到n-1)
+
+如果没有小朋友，请返回-1
+//用list容器模拟：
+class Solution {
+public:
+    int LastRemaining_Solution(int n, int m)
+    {
+        if(n <=0 || m <= 0)
+            return -1;
+        list<int> a;
+        for(int i = 0;i<n;i++)
+        {
+            a.push_back(i);
+        }
+        auto it = a.begin();
+        
+        int sum = n;
+        while(a.size() > 1)
+        {
+            int j=0;//每次游戏的步数
+            while(j<m)
+            {
+                if(it ==a.end())//迭代之指向a.end()时，指向a中最后一个元素的后一个
+                    it =a.begin();
+                j++;
+                it++;
+            }
+            it--;
+            it = a.erase(it);
+
+        }
+        return a.front();
+    }
+};
+
+数学思路：
+我们把这种关系表示为：
+
+         0                  n=1
+f(n,m)={
+         [f(n-1,m)+m]%n     n>1
+
+尽管得到这个公式的分析过程非常复杂，
+但它用递归或者循环都很容易实现。最重要的是，这是一种时间复杂度为O(n)，空间复杂度为O(1)的方法，因此无论在时间上还是空间上都优于前面的思路。
+n-1个人的约瑟夫环与n个人的约瑟夫环的对应关系：最终的结果应为同一个人，且变化关系应为，从n-1到n：(x+m)%n
+仅剩一个人时的约瑟夫环的结果：编号为0
+
+class Solution {
+public:
+    int LastRemaining_Solution(int n, int m)
+    {
+        if(n<2||m<2)//特殊情况处理
+            return n-1;
+        return (LastRemaining_Solution(n-1,m)+m)%n;//迭代关系
+    }
+};
+
+循环法：
+class Solution {
+public:
+    int LastRemaining_Solution(int n, int m)
+    {
+        if(n<2||m<2)//特殊情况处理
+            return n-1;
+        int a=0;//当仅剩一个人时，这个人的编号为0
+        for(int i=1;i<=n;i++)//进行循环：采用倒序的方式，从1个人到n个人，找有n个人时对应的编号
+        {
+            a=(a+m)%i;//每次对i取余，分别代表每次参加游戏的人数。
+        }
+        return a;
+    }
+};
