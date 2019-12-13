@@ -1,0 +1,92 @@
+题目描述
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 即输出P%1000000007
+输入描述:
+题目保证输入的数组中没有的相同的数字
+
+数据范围：
+
+	对于%50的数据,size<=10^4
+
+	对于%75的数据,size<=10^5
+
+	对于%100的数据,size<=2*10^5
+
+示例1
+输入
+复制
+1,2,3,4,5,6,7,0
+输出
+复制
+7
+
+1.暴力搜索 复杂度O(n*n)
+2.O(N*logN)归并排序中先是划分到底，直到需要并的两个子数组中只有一个数字，
+
+这两个字序列就是分别有序的，然后两个有序序列继续合并，我们所做的处理就是在两个有序序列合并的过程中进行计算即可
+
+现在有两个子序列，下标分别是[s,m],[m+1,t]
+
+当前面子序列中某个元素i大于后面子序列中某个元素j时，元素i到m之间的元素肯定都是大于元素j的，因为数组是有序的，
+
+那么他们和元素j都可以组成逆序对，所以我们需要知道此时i元素到m元素之间元素的数量，其数量可以表示为m-i+1,也可以表示为j-k，
+
+k代表放入新数组中已经有序的数字，这两种表示方法都是同一个意思
+
+归并排序求解逆序数的时间复杂度为:O（N*log N）
+
+代码如下：
+class Solution {
+public:
+    int tmp[200000];
+    int ans = 0;
+    void mer(vector<int>& data,int s,int m,int t)
+    {
+        int i = s;
+        int j = m+1;
+        int k = s;
+        while(i <= m&& j<= t)
+        {
+            if(data[i]<= data[j])
+            {
+                tmp[k++] = data[i++];
+            }
+            else
+            {
+                ans += (m-i+1);
+                ans %= 1000000007;
+                tmp[k++] = data[j++];
+            }
+        }
+        
+        while(i<=m)
+        {
+            tmp[k++] = data[i++];
+        }
+        while(j<=t)
+        {
+            tmp[k++] = data[j++];
+        }
+        
+        for(int x = s;x<=t;x++)
+        {
+            data[x] = tmp[x];
+        }
+    }
+        
+    void mersort(vector<int>& data,int s,int t)
+    {
+        if(s<t)
+        {
+            int m = (s+t)/2;
+            mersort(data,s,m);
+            mersort(data,m+1,t);
+            mer(data,s,m,t);
+        }
+    }
+    int InversePairs(vector<int> data) {
+        if(data.size() <= 1)
+            return 0;
+        mersort(data,0,data.size()-1);
+        return ans%1000000007;
+    }
+};
