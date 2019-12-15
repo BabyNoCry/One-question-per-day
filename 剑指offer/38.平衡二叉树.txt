@@ -1,0 +1,29 @@
+题目描述
+输入一棵二叉树，判断该二叉树是否是平衡二叉树。
+
+class Solution {
+public:
+     int TreeDepth(TreeNode* pRoot)
+    {
+        if(pRoot == nullptr)
+            return 0;
+        int left = TreeDepth(pRoot->left) +1;
+        int right = TreeDepth(pRoot->right) +1;
+        
+        return left > right ? left : right;
+    }
+    bool IsBalanced_Solution(TreeNode* pRoot) {
+        if(pRoot == nullptr)
+            return true;
+        int l = TreeDepth(pRoot->left);
+        int r = TreeDepth(pRoot->right);
+        if(abs(l-r) <= 1)
+        {
+            return IsBalanced_Solution(pRoot->left)&&IsBalanced_Solution(pRoot->right);
+        }
+        else
+        {
+            return false;
+        }
+    }
+};
