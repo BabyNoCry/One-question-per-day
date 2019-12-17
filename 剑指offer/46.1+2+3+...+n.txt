@@ -1,0 +1,56 @@
+题目描述
+求1+2+3+...+n，要求不能使用乘除法、
+for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
+//收获新知识：对整数进行取反（！），就转换为bool型，但是结果不符合：即就是大于0的整数取反变为false，小于0的变为true。
+//那么对整数进行两次取反（！！），就会得到真正的结果 大于0为true,小于0为false;
+
+//递归式求解
+/*class Solution {
+public:
+    int Sum_Solution(int n) {
+        int result=0;
+        (n>0)&&(result=Sum_Solution(n-1)+n);
+        return result;
+    }
+};
+*/
+
+//利用等差和公式求解
+/*class Solution {
+public:
+    int Sum_Solution(int n) {
+       return ((int)pow(n,2)+n)>>1;//pow()函数返回值时double类型
+    }
+};
+*/
+
+
+//利用构造函数进行求解
+class A;
+A *Array[2];
+class A {
+public:
+    virtual int Sum(int n) {
+        return 0;
+    }
+};
+class B : public A {
+public:
+	//对n连续做两次反运算，即!!n,那么非零的n转换为true，0转换为false
+    virtual int Sum(int n) {
+        return Array[!!n]->Sum(n - 1) + n;
+    }
+};
+class Solution {
+public:
+    int Sum_Solution(int n) {
+        A a;
+        B b;
+        Array[0] = &a;
+        Array[1] = &b;
+        int value = Array[1]->Sum(n);
+        return value;
+    }
+};
+
+//其他方法 ：1 利用构造函数的静态变量。  2.函数模板
