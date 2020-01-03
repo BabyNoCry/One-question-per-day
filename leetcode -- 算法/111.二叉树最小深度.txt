@@ -1,0 +1,62 @@
+//方法一：递归
+//当你遍历到一个节点，这个节点的度为1.这时按照我们已有的写法，当判断到该节点空的那个孩子时，我们的递归就会结束并开始返回。但实际上度为1的节点我们是要沿着它非空的孩子继续向下找，直到找到最后的叶子节点，这才能求出一个正确的深度值。
+/*class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        //根节点为空返回0
+        if(root == NULL)
+        return 0;
+        //根节点不为空，但左右结点均为空，返回1
+        if(!root->left && !root->right)
+            return 1;
+        //根节点不为空，但左右结点有一个为空，递归执行另一个不为空的结点
+        if((!root->left&&root->right) || (!root->right&& root->left))
+        {
+            root = root->left? root->left:root->right;
+            return minDepth(root) + 1;
+        }
+
+        //左右均不为空
+        int l = minDepth(root->left) + 1;
+        int r = minDepth(root->right) + 1;
+
+        //返回小的路径
+        return l > r? r:l;
+    }
+};*/
+
+
+//方法二：广度优先遍历
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(root == NULL)
+        return 0;
+        int count =  1;
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty())
+        {
+            int size = q.size();
+            for(int i = 0 ;i < size;i++)
+            {
+                TreeNode* cur = q.front();
+                q.pop();
+                if(cur->right)
+                {
+                    q.push(cur->right);
+
+                }
+                if(cur->left)
+                {
+                    q.push(cur->left);
+                }
+
+                if(cur->left == NULL && cur->right == NULL)
+                return count;
+            }
+            count++;
+        }
+        return count;
+    }
+};
