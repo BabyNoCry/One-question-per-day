@@ -1,0 +1,39 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+bool hasCycle(struct ListNode *head) {
+    //方法快慢指针法 相遇：有环  不相遇：无环
+    //快每次走两步，慢每次走一步。  （其他的差距有可能会错过，导致有环但不会相遇。）
+  //  struct ListNode* fast=head;
+  //  struct ListNode* slow=head;
+  //  while(fast&&fast->next)   
+  //  {
+ //       fast=fast->next->next;//快指针每次走两步
+ //       if(fast==slow)
+ //       {
+//return true;}
+  //      else
+  //      {
+            
+  //          slow=slow->next;//慢指针每次走一步
+ //       }
+//}
+    //return false;
+    struct ListNode* fast=head;
+    struct ListNode* slow=head;
+    while(fast&&fast->next)
+    {
+        fast=fast->next->next;
+        slow=slow->next;
+        if(fast==slow)
+        {
+            return true;
+        }
+}
+    return false;
+    
+}
