@@ -1,0 +1,92 @@
+小Q在进行一场竞技游戏，这场游戏的胜负关键就在于能够能争夺一条长度为L的河道，即可以看作是[0,L]的一条数轴。
+
+这款竞技游戏当中有n个可以提供视野的道具-真视守卫，第i个真视守卫能够覆盖区间[xi,yi]。现在小Q想知道至少用几个真视守卫就可以覆盖整段河道。
+
+输入：
+
+输入包括n+1行。
+
+第一行包括两个整数n和L(1<=n<=10^5,1<=L<=10^9)
+
+接下来的n行，每行两个正整数xi，yi(0<=xi<=yi<=10^9)，表示第i个真视守卫覆盖的区间。
+
+输出：
+
+一个整数，表示最少需要的守卫的数量，如果无解，输出-1。
+
+分析：典型的贪心法。首先，关键的一点是需要将数组进行排序，我的解法是：首先对于输入的看做结构体，对其按照起始点进行排序。排序之后，设置当前的找到的末端，然后寻找起始点在当前末端之前的，能够向最远延伸的绳子，并且把这个绳子的结束点当做目前的末端。
+
+结束条件：当前末端>=L，成功；没有找到满足上面条件的，返回-1.
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+struct g{
+    int start;
+    int end;
+    
+};
+bool cmp(g g1,g g2)
+{
+    if(g1.start == g2.start)
+    {
+        return g1.end < g2.end;
+    }
+    else
+    {
+        return g1.start < g2.start;
+    }
+}
+int main()
+{
+    int n , l;
+    cin >> n >>l;
+    vector<g> v(n);
+    for(int i = 0; i < n; i++)
+    {
+        cin>>v[i].start >> v[i].end;
+    }
+    sort(v.begin(),v.end(),cmp);
+    
+    int curend = 0;
+    int count = 0;
+    int index = -1;
+    
+    while(curend < l)
+    {
+        bool isfind = false;
+        int tmpend = curend;
+        for(int i = index + 1 ; i < n; i++)
+        {
+            //如果当前眼的末端小于 已经覆盖到的末端的话，那么当前这个眼起不到扩宽视野的作用。
+            if(v[i].end <= curend)
+                continue;
+            
+            //如果当前的眼的其实位子大于已经覆盖的末端，则跳出循环，因为后面更不可能满足条件。
+            if(v[i].start > curend)
+                break;
+            
+            //选取满足以上条件且覆盖范围最广的那一个，所以要继续遍历后面进行筛选
+            if(tmpend < v[i].end)
+            {
+                isfind = true;
+                index = i;
+                tmpend = v[i].end;
+            }
+            
+        }
+        if(!isfind)
+        {
+            break;
+        }
+        else
+        {
+            curend = tmpend;
+            count++;
+        }
+    }
+    cout<<(curend < l ? -1 : count)<<endl;
+    return 0;
+}
